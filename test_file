@@ -1,25 +1,10 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import os
 
-public class VulnerableUserService {
+def backup(path):
+    # ❌ Hardcoded password
+    password = "P@ssw0rd123"
 
-    public static void main(String[] args) throws Exception {
-        String userInput = args[0]; // untrusted input
+    # ❌ Command injection
+    os.system("tar czf backup.tar.gz " + path)
 
-        Connection conn = DriverManager.getConnection(
-            "jdbc:h2:mem:testdb", "sa", ""
-        );
-
-        Statement stmt = conn.createStatement();
-
-        // ❌ SQL Injection
-        String query = "SELECT * FROM users WHERE username = '" + userInput + "'";
-        ResultSet rs = stmt.executeQuery(query);
-
-        while (rs.next()) {
-            System.out.println(rs.getString("username"));
-        }
-    }
-}
+backup(input("Enter path: "))
